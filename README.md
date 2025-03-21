@@ -5,6 +5,10 @@
 Este é um projeto de jogo inspirado em **Pokémon**.
 um jogo MMORPG desenvolvido com RPGJS. funcionalidades incluidas escolha de companheiro, áreas de caça, encontros aleatórios.
 
+## como fazer instalação do projeto...
+[Clique aqui para ver o guia de instalação/clone](IN.md)
+
+
 ### Comandos NPM
 ```mermaid
 sequenceDiagram

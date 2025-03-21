@@ -5,14 +5,17 @@ const player: RpgPlayerHooks = {
         player.name = 'Dirr'
         player.setComponentsTop(Components.text('{name}'))
         player.setVariable('movementCounter', 0)
+        player.setVariable('companion', '') // Inicializa a variável companion
     },
     onInput(player: RpgPlayer, { input }) {
         if (input == Control.Back) {
             player.callMainMenu()
         }
     },
+
     async onJoinMap(player: RpgPlayer) {
         if (player.getVariable('AFTER_INTRO')) {
+            player.gui('companion-hud').open()
             return
         }
         player.setVariable('AFTER_INTRO', true)
@@ -28,6 +31,7 @@ const player: RpgPlayerHooks = {
         player.showNotification(`Você escolheu o Espírito ${choice.text}.`, {
             time: 2000
         })
+        player.gui('companion-hud').open()
     },
     onInShape(player: RpgPlayer, shape: RpgShape) {
         if (shape.name.includes('caca')) {
