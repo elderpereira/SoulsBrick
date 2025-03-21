@@ -1,4 +1,6 @@
 import { RpgPlayer, type RpgPlayerHooks, Control, Components, RpgShape } from '@rpgjs/server'
+import ControlsHud from './gui/ControlsHud.vue'
+import BattleHud from './gui/BattleHud.vue'
 
 const player: RpgPlayerHooks = {
     onConnected(player: RpgPlayer) {
@@ -16,6 +18,7 @@ const player: RpgPlayerHooks = {
     async onJoinMap(player: RpgPlayer) {
         if (player.getVariable('AFTER_INTRO')) {
             player.gui('companion-hud').open()
+            player.gui('controls-hud').open() // Abre a nova HUD de controles
             return
         }
         player.setVariable('AFTER_INTRO', true)
@@ -32,6 +35,7 @@ const player: RpgPlayerHooks = {
             time: 2000
         })
         player.gui('companion-hud').open()
+        player.gui('controls-hud').open() // Abre a nova HUD de controles
     },
     onInShape(player: RpgPlayer, shape: RpgShape) {
         if (shape.name.includes('caca')) {
@@ -60,15 +64,26 @@ const player: RpgPlayerHooks = {
             if (movementCounter >= 32) {
                 movementCounter = 0
                 // Verifica se encontra um espírito elemental
-                if (Math.random() < 0.1) { // 10% de chance de encontrar um espírito elemental
+                if (Math.random() < 0.7) { // 70% de chance de encontrar um espírito elemental
                     player.showNotification('Você encontrou um espírito elemental!', {
                         time: 2000, // Tempo em milissegundos
                         //icon: 'icon-id', // Opcional: ID do ícone
                         //sound: 'sound-id' // Opcional: ID do som
                     })
+                    player.gui('companion-hud').close()
+                    player.gui('controls-hud').close()
+                    player.gui('battle-hud').open()
+                    player.controls.stopInputs() // Desativa a movimentação do jogador
                 }
             }
             player.setVariable('movementCounter', movementCounter)
+        }
+    },
+    onGuiClosed(player: RpgPlayer, gui: string) {
+        if (gui === 'battle-hud') {
+            player.gui('companion-hud').open()
+            player.gui('controls-hud').open()
+            player.controls.startInputs() // Reativa a movimentação do jogador
         }
     }
 }

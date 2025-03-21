@@ -9,5 +9,5 @@ modules = [
 
 [start]
     map = 'simplemap'
-    graphic = 'female'
+    graphic = 'hero'
     hitbox = [16, 16]
